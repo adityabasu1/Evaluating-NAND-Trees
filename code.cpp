@@ -1,7 +1,7 @@
 /*********************************
  
     Creator: Aditya Basu
-    Date: 11/3/2021
+    Date: 11/3/21
 
 *********************************/
 
@@ -33,6 +33,29 @@ node *create_node(bool val)
 
 // Number of leaves = 2^k
 node *build_tree(int lev, int k)
+{
+    bool inp;
+    node *root;
+
+    if (lev == k)
+    {
+        cout<<"Enter data: ";
+        cin >> inp;  
+        root = create_node(inp);
+        return root;
+    }
+    else if (lev < k)
+    {
+        cout<<"Enter data: ";
+        cin >> inp;
+        root = create_node(inp);
+        root->left = build_tree(lev + 1, k);
+        root->right = build_tree(lev + 1, k);
+        return root;
+    }
+}
+
+node *build_random_tree(int lev, int k)
 {
     bool inp;
     node *root;
@@ -232,9 +255,11 @@ int main()
     // cout<<random_eval_NAND(WorstTreeZero)<<endl;
     // cout<<random_eval_NAND(WorstTreeOne)<<endl;
 
-    node *ND = build_tree(0, k);
+    node *ND = build_random_tree(0, k);
 
-    compare_methods(ND);
+    cout << endl<< random_eval_NAND(ND) <<endl;
+
+    //compare_methods(ND);
 
     // cout<<endl;
     // cout<<"Tree with "<<pow(2,k)<<" leaves: ";
