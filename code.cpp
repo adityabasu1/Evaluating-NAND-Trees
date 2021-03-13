@@ -30,7 +30,6 @@ node *create_node(bool val)
     return newnode;
 }
 
-
 // Number of leaves = 2^k
 node *build_tree(int lev, int k)
 {
@@ -39,14 +38,14 @@ node *build_tree(int lev, int k)
 
     if (lev == k)
     {
-        cout<<"Enter data: ";
-        cin >> inp;  
+        cout << "Enter data: ";
+        cin >> inp;
         root = create_node(inp);
         return root;
     }
     else if (lev < k)
     {
-        cout<<"Enter data: ";
+        cout << "Enter data: ";
         cin >> inp;
         root = create_node(inp);
         root->left = build_tree(lev + 1, k);
@@ -62,20 +61,16 @@ node *build_random_tree(int lev, int k)
 
     if (lev == k)
     {
-        // cout<<"Enter data: ";
-        // cin >> inp;
         inp = rand() % 2;
         root = create_node(inp);
         return root;
     }
     else if (lev < k)
     {
-        // cout<<"Enter data: ";
-        // cin >> inp;
         inp = rand() % 2;
         root = create_node(inp);
-        root->left = build_tree(lev + 1, k);
-        root->right = build_tree(lev + 1, k);
+        root->left = build_random_tree(lev + 1, k);
+        root->right = build_random_tree(lev + 1, k);
         return root;
     }
 }
@@ -94,8 +89,8 @@ bool naive_eval_NAND(node *root)
 }
 
 // "root" should contain the value to which the NAND tree would evaluate to
-//  root is essentially a pointer to that first node 
-void create_worst_tree(node *root, int lev, int k) 
+//  root is essentially a pointer to that first node
+void create_worst_tree(node *root, int lev, int k)
 {
     if (lev < k)
     {
@@ -198,7 +193,6 @@ void compare_methods(node *root)
         val = random_eval_NAND(root);
         toc = clock();
         a3 = (a3 * i + calc_time(tic, toc)) / (i + 1);
-        
     }
 
     cout << "Naive recursive algorithm: " << a1 << " seconds" << endl;
@@ -255,9 +249,9 @@ int main()
     // cout<<random_eval_NAND(WorstTreeZero)<<endl;
     // cout<<random_eval_NAND(WorstTreeOne)<<endl;
 
-    node *ND = build_random_tree(0, k);
+    node *ND = build_random_tree(0,k);
 
-    cout << endl<< random_eval_NAND(ND) <<endl;
+    cout << endl << random_eval_NAND(ND) << endl;
 
     //compare_methods(ND);
 
