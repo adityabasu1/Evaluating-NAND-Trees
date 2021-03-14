@@ -1,5 +1,6 @@
 /*********************************
  
+    EVALUATING NAND TREES
     Creator: Aditya Basu
     Date: 11/3/21
 
@@ -14,6 +15,7 @@ using namespace std;
 
 #define TIMES 100
 
+// A node contains a boolean data field and pointers to its left and right child
 struct node
 {
     bool val;
@@ -21,6 +23,7 @@ struct node
     struct node *right;
 };
 
+// function to create a node with its data field equal to val
 node *create_node(bool val)
 {
     node *newnode = new node;
@@ -30,6 +33,7 @@ node *create_node(bool val)
     return newnode;
 }
 
+// Function to create a NAND tree taking data input from the user 
 // Number of leaves = 2^k
 node *build_tree(int lev, int k)
 {
@@ -54,6 +58,7 @@ node *build_tree(int lev, int k)
     }
 }
 
+// Function to create a random NAND tree of 2^k leaf nodes
 node *build_random_tree(int lev, int k)
 {
     bool inp;
@@ -75,11 +80,15 @@ node *build_random_tree(int lev, int k)
     }
 }
 
+// #EVALUATING A NAND TREE => Finding the value of the top-most node a.k.a root
+// A recursive algorithm to evaluate a NAND tree
 bool naive_eval_NAND(node *root)
 {
     bool l, r, val;
-    //at the leaf node
-    if ((root->right) == NULL) // this also means root->left = NULL
+
+    //Base case: we're at the leaf node
+    // this also means root->left = NULL
+    if ((root->right) == NULL) 
         return root->val;
 
     l = naive_eval_NAND(root->left);
@@ -88,8 +97,31 @@ bool naive_eval_NAND(node *root)
     return val;
 }
 
+// A recursive algorithm to evaluate a NAND tree which uses "short-circuiting"
+// We always recurse on the left subtree first and short-circuit if the left subtree evaluates to 0
+// Leverage the property: O NAND X = 1
+bool left_first(node *root)
+{
+    bool l, r, val;
+
+    //at the leaf node
+    if ((root->right) == NULL) // this also means root->left = NULL
+        return root->val;
+
+    l = naive_eval_NAND(root->left);
+    if (l == 0)
+        return 1;
+    else
+    {
+        r = naive_eval_NAND(root->right);
+        val = !(l && r); // NAND operation
+        return val;
+    }
+}
+
+// A function to create a NAND tree of 2^k leaf nodes which serves as the worst-case when evaluated by left-first 
 // "root" should contain the value to which the NAND tree would evaluate to
-//  root is essentially a pointer to that first node
+//  root is essentially a pointer to the first node (or the "topmost" node)
 void create_worst_tree(node *root, int lev, int k)
 {
     if (lev < k)
@@ -113,25 +145,10 @@ void create_worst_tree(node *root, int lev, int k)
     }
 }
 
-bool left_first(node *root)
-{
-    bool l, r, val;
 
-    //at the leaf node
-    if ((root->right) == NULL) // this also means root->left = NULL
-        return root->val;
-
-    l = naive_eval_NAND(root->left);
-    if (l == 0)
-        return 1;
-    else
-    {
-        r = naive_eval_NAND(root->right);
-        val = !(l && r); // NAND operation
-        return val;
-    }
-}
-
+// A randomized recursive algorithm to evaluate a NAND tree which uses "short-circuiting" 
+// At each node, we choose one subtree(either left or right) RANDOMLY to recurse first
+// If that subtree evaluates to 0, we short-circuit leveraging the property: O NAND X = 1 
 bool random_eval_NAND(node *root)
 {
     bool l, r, val, choice;
@@ -202,6 +219,7 @@ void compare_methods(node *root)
     return;
 }
 
+// function to carry out pre-order traversal of a tree
 void preOrder(node *root)
 {
     if (root == NULL)
@@ -210,6 +228,68 @@ void preOrder(node *root)
     cout << root->val << " ";
     preOrder(root->left);
     preOrder(root->right);
+}
+
+// Number of leaves = 2^k
+// This function computes the probability that a random NAND tree of 2^k leaf nodes evaluates to 1
+double P1(int k)
+{
+    double val;
+
+    if (k == 0)
+        return 0.5;
+    else
+    {
+        val = P1(k - 1);
+        return (1 - pow(val, 2));
+    }
+}
+
+// Number of leaves in the random NAND tree = 2^k
+// This function computes the probability that a random NAND tree of 2^k leaf nodes evaluates to 0
+// We can leverage the fact that Po(k) + P1(k) = 1, and thus P0(k) = 1 - P1(k)
+// But, still a function to calculate P0(k) by NOT using the previous function P1(k)
+double P0(int k)
+{
+    double val;
+
+    if (k == 0)
+        return 0.5;
+    else
+    {
+        val = P0(k - 1);
+        return pow((1 - P0(k - 1)), 2);
+    }
+}
+
+// This function will demonstrate convergence of probabilties
+void convergence_random_NAND()
+{
+    int k_MAX = 20;
+    double p_0, p_1;
+
+    cout << "For reference: " << endl;
+    cout << "P0(k) is the probability that a random NAND tree of 2^k leaf nodes evaluates to 0" << endl;
+    cout << "P1(k) is the probability that a random NAND tree of 2^k leaf nodes evaluates to 1" << endl;
+    cout << endl;
+    for (int i = 0; i <= k_MAX; i++)
+    {
+        p_1 = P1(i);
+        p_0 = 1 - p_1;
+        cout << "P0(" << i << "): " << p_0 << endl;
+        cout << "P1(" << i << "): " << p_1 << endl;
+        cout << endl;
+    }
+
+    cout << endl << "We see P0(k) and P1(k) converge" << endl << endl;
+    cout << "For odd values of k, P0(k) converges to 0 and P1(k) converges to 1" << endl;
+    cout << "That is, given k is odd and high enough in magnitude, the random NAND tree will most likely evaluate to 1" << endl;
+    cout << endl;
+    cout << "And for even values of k, P0(k) converges to 1 and P1(k) converges to 0" << endl;
+    cout << "That is, given k is even and high enough in magnitude, the random NAND tree will most likely evaluate to 0" << endl;
+    cout<<endl;
+
+    return;
 }
 
 int main()
@@ -249,9 +329,11 @@ int main()
     // cout<<random_eval_NAND(WorstTreeZero)<<endl;
     // cout<<random_eval_NAND(WorstTreeOne)<<endl;
 
-    node *ND = build_random_tree(0,k);
+    node *ND = build_random_tree(0, k);
 
-    cout << endl << random_eval_NAND(ND) << endl;
+    cout << random_eval_NAND(ND) << endl;
+
+    convergence_random_NAND();
 
     //compare_methods(ND);
 
