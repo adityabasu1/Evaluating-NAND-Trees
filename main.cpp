@@ -218,7 +218,7 @@ Value of the root: a boolean
 Time complexity:
 Let n = #leaf nodes
 Sublinear in expectation i.e O(n^c) (0<c<1) */
-bool random_eval_NAND(node *root)
+bool random_first(node *root)
 {
     bool l, r, val, choice;
 
@@ -231,24 +231,24 @@ bool random_eval_NAND(node *root)
     choice = rand() % 2;
     if (choice == 0) // if choice is 0, then recurse on left subtree first
     {
-        l = random_eval_NAND(root->left);
+        l = random_first(root->left);
         if (l == 0)
             return 1; // short-circuit
         else          // can't short-circuit
         {
-            r = random_eval_NAND(root->right);
+            r = random_first(root->right);
             val = !(l && r);
             return val;
         }
     }
     else // if choice is 1, then recurse on right subtree first
     {
-        r = random_eval_NAND(root->right);
+        r = random_first(root->right);
         if (r == 0)
             return 1; // short-circuit
         else          // can't short-circuit
         {
-            l = random_eval_NAND(root->left);
+            l = random_first(root->left);
             val = !(l && r);
             return val;
         }
@@ -283,7 +283,7 @@ void compare_methods(node *root)
         a2 = (a2 * i + calc_time(tic, toc)) / (i + 1);
 
         tic = clock();
-        val = random_eval_NAND(root);
+        val = random_first(root);
         toc = clock();
         a3 = (a3 * i + calc_time(tic, toc)) / (i + 1);
     }
