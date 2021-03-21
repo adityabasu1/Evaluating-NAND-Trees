@@ -373,7 +373,7 @@ double P0(int k)
     else
     {
         val = P0(k - 1);
-        return pow((1 - P0(k - 1)), 2);
+        return pow(1 - val, 2);
     }
 }
 
@@ -396,7 +396,8 @@ void convergence_random_NAND()
         cout << endl;
     }
 
-    cout << "We see P0(k) and P1(k) converge:" << endl << endl;
+    cout << "We see P0(k) and P1(k) converge:" << endl
+         << endl;
     cout << "For odd values of k, P0(k) converges to 0 and P1(k) converges to 1" << endl;
     cout << "That is, given k is odd and high enough in magnitude, the random NAND tree will evaluate to 1 with high probability" << endl;
     cout << endl;
@@ -411,6 +412,7 @@ int main()
 {
     // Taking input
     int k;
+    cout << endl << "Note that we'll have 2^k leaf nodes in the NAND trees" << endl;
     cout << "Enter k: ";
     cin >> k;
 
