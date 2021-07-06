@@ -31,7 +31,7 @@ An example:
 - Convergence of probabilities of random NAND Trees    
 ## Running the Code <br />
 - Compilation: ```g++ Code_Evaluating_NAND_Trees.cpp``` <br />
-- Execution: ```./a.out``` (for Ubuntu) <br />
+- Execution: ```./a.out```<br />
 ## Input-Output <br />
 On executing, you shall get this prompt:  
 ```Note that we'll have 2^k leaf nodes in the NAND trees```     
