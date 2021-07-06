@@ -18,8 +18,11 @@ A NAND tree is a complete binary tree with the following properties:
   
 This means that for any internal node (non-leaf node): ```node.value = (node.left_child) NAND (node.right_child)```  
 
+An example:  
+
+
   ![hehe2](https://lh4.googleusercontent.com/H_x9UtZm6mXFLiK7Kv2MXLZS3ZqdjQMzQuHBKXVQV1j_7L3AWUN_CD_vh7LLemmZQXKTaKE9IxPMcFDLwHMl8Rd30D7japUPH7nnaAwPssbp6-phYdZrkbAk-MZ8jKMzsxz_rmNfFw)
-## Algorithms  
+## Algorithms on NAND Trees 
 - Naive recursive algorithm (Linear)  
 - Left-first algorithm (Linear in worst case)  
 - Random-first algorithm (Sublinear)  
