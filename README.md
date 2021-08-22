@@ -38,14 +38,14 @@ On executing, you shall get this prompt:
 ```Enter k:```    
  
 **To Be Kept In Mind**  
-- Since, the tree would be formed of 2^k leaf nodes, 2^(k+1) - 1 total nodes in the perfect binary tree  
+- Total number of nodes in the perfect binary tree = 2^(k+1) - 1, where the tree has 2^k leaf nodes. 
 - **DO NOT ENTER K MORE THAN 23**   
-- Associated problems if k > 23: May lead to size shortage of data types  
-- So, as a rule of thumb, ```0 <= k <= 23```  
+- k > 23 may lead to size shortage of data types  
+- So, as a rule of thumb, ```0 <= k <= 23```
 
 ## Running Time    
 - For ```k = 23``` running time would be around 15 seconds   
-- So, in general, run time < 15 seconds    
+- So, in general, run time is not more than 15 seconds    
 
 
 
